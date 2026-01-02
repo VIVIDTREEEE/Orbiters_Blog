@@ -1,0 +1,31 @@
+/* =========================================================
+   Search Overlay
+   ========================================================= */
+
+   #searchform-overlay{
+    background-color: var(--e-global-color-primary);
+  }
+  
+  #searchform-overlay form .search-text,
+  #icon-searchform-overlay form .search-text{
+    font-family: var(--e-global-typography-secondary-font-family), Sans-serif;
+    font-size: var(--e-global-typography-secondary-font-size);
+    font-weight: var(--e-global-typography-secondary-font-weight);
+    line-height: var(--e-global-typography-secondary-line-height);
+    color: var(--e-global-color-b08b7e9);
+  }
+  
+  #searchform-overlay a.search-overlay-close,
+  #icon-searchform-overlay a.search-overlay-close{
+    background-color: var(--e-global-color-primary);
+  }
+  
+  #searchform-overlay form input,
+  #icon-searchform-overlay form input{
+    position: relative;
+    border: 0;
+    background-color: rgba(0,0,0,0);
+    border-bottom: 1px solid var(--e-global-color-3fcbc60);
+    z-index: 2;
+    transition: border-color .3s ease;
+  }

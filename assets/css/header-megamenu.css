@@ -1,0 +1,537 @@
+/* =========================================================
+   Header
+   ========================================================= */
+
+/* 헤더 배경 */
+.minimal-header{
+  background-color: var(--e-global-color-b08b7e9) !important;
+}
+
+/* 헤더 전체 박스 영역 */
+#site-header{
+  position: relative;
+  height: 8rem;
+  --hdr-pad-top: 2rem;
+  --hdr-pad-x: 1rem;
+  --hdr-pad-bottom: 1rem;
+
+  padding: var(--hdr-pad-top) var(--hdr-pad-x) var(--hdr-pad-bottom);
+  overflow: visible;
+  z-index: 1000;
+}
+
+/* 헤더 내부 */
+#site-header-inner{
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 15px;
+  background: var(--e-global-color-3fcbc60);
+  border: 1px solid var(--e-global-color-primary);
+  border-radius: 1rem;
+  box-sizing: border-box;
+}
+
+/* 로고 */
+#site-logo{
+  flex: 0 0 auto;
+  margin-right: 0;
+  z-index: 99;
+}
+
+/* 로고 이미지 크기 */
+#site-logo #site-logo-inner a img{
+  width: 2.5rem !important;
+  height: auto;
+}
+
+/* 네비 영역 */
+#site-navigation{ width: 100%; }
+
+/* wrap */
+#site-navigation-wrap{
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 가운데 */
+  width: 100%;
+}
+
+/* =========================================================
+   !!! 중요 수정: 데스크탑 헤더 네비로 스코프 고정
+   (mobile-dropdown에도 같은 #mega-menu-wrap-main_menu가 있어서,
+    #site-header만으로는 모바일까지 타는 케이스가 생김)
+   ========================================================= */
+
+/* 래퍼가 absolute 기준점이 되지 않게 (드롭다운 오른쪽 밀림 방지) */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu{
+  background: transparent !important;
+  position: static !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* UL(최상위) 가운데 정렬 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu #mega-menu-main_menu{
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 28px;
+  background: transparent !important;
+  width: auto !important;
+}
+
+/* =========================================================
+   !!! 중요 수정: 최상위 메뉴 링크만 타겟 (서브메뉴 링크까지 같이 먹는 문제 방지)
+   ========================================================= */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+#mega-menu-main_menu > li > a.mega-menu-link{
+  background: transparent !important;
+  color: var(--e-global-color-text) !important;
+  font-family: var(--e-global-typography-text-font-family) !important;
+  font-size: var(--e-global-typography-text-font-size) !important;
+  font-weight: var(--e-global-typography-text-font-weight) !important;
+  line-height: var(--e-global-typography-text-line-height);
+  text-transform: none !important;
+}
+
+/* indicator(화살표) 숨김 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu .mega-indicator{
+  display: none !important;
+}
+
+/* 검색 버튼을 오른쪽 끝으로 (Max Mega Menu 구조 기준) */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+#mega-menu-main_menu > li.search-toggle-li{
+  position: absolute !important;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0 !important;
+}
+
+/* 부모 li를 static으로: 드롭다운을 헤더(#site-header-inner) 기준으로 풀폭 absolute 가능 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+#mega-menu-main_menu > li.mega-menu-item-has-children,
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+#mega-menu-main_menu > li.mega-menu-megamenu{
+  position: static !important;
+}
+
+/* 메가 패널(ul.mega-sub-menu) */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+#mega-menu-main_menu > li.mega-menu-item-has-children > ul.mega-sub-menu,
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+#mega-menu-main_menu > li.mega-menu-megamenu > ul.mega-sub-menu{
+  position: absolute !important;
+
+  /* ✅ 헤더(#site-header-inner) 폭에 정확히 맞추기 (반응형에서 1px 틀어짐 방지)
+     - left/right + negative margin 조합은 뷰포트/서브픽셀 상황에서 미세 오차가 생길 수 있어
+       "왼쪽 -1px + width calc" 방식으로 고정합니다. */
+  left: -1px !important;
+  right: auto !important;
+  width: calc(100% + 2px) !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+
+  box-sizing: border-box !important;
+
+  /* ✅ 헤더 하단 라운딩/보더 이음새 숨기기 위해 더 겹치게 올림 */
+  top: calc(100% - 8px) !important;
+  margin-top: 0 !important;
+
+  background: var(--e-global-color-3fcbc60) !important;
+  border: 1px solid var(--e-global-color-primary) !important;
+
+  /* ✅ seam은 숨기되, 레이아웃/두께는 유지 */
+  border-top: 1px solid transparent !important;
+
+  overflow: hidden !important;
+  border-radius: 0 0 1rem 1rem !important;
+
+  padding: 2rem 0 !important;
+  box-shadow: none !important;
+  z-index: 98 !important;
+
+  /* ===== Open/Close animation (CSS only) =====
+     - Open: drops DOWN from the top (top -> bottom)
+     - Close: slides UP (bottom -> top)
+     NOTE: If Max Mega Menu applies inline `display:none !important`,
+     CSS alone cannot animate the close; see comment below.
+  */
+  transform-origin: top center;
+
+  /* closed state (prepared for open) */
+  transform: translateY(-10px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  will-change: transform, opacity;
+
+  /* delay visibility hiding so the close transition can run */
+  transition:
+    transform 600ms ease,
+    opacity 600ms ease,
+    visibility 0s linear 600ms;
+
+  /* 기존 max-width:100% 때문에 1~2px 줄어드는 케이스 방지 */
+  max-width: none !important;
+}
+
+/* If MMM sets inline `display:none` (without !important), this keeps it renderable so the close transition can run. */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+#mega-menu-main_menu > li > ul.mega-sub-menu,
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+#mega-menu-main_menu > li > ul.mega-sub-menu[style*="display: none"]{
+  display: block !important;
+}
+
+/* 열렸을 때: 위에서 아래로 내려오듯 자연스럽게 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+#mega-menu-main_menu > li.mega-toggle-on.mega-menu-item-has-children > ul.mega-sub-menu,
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+#mega-menu-main_menu > li.mega-toggle-on.mega-menu-megamenu > ul.mega-sub-menu{
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  transition:
+    transform 600ms ease,
+    opacity 600ms ease,
+    visibility 0s linear 0s;
+}
+
+/* hover 방식으로 열리는 환경도 같이 커버 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+#mega-menu-main_menu > li:hover.mega-menu-item-has-children > ul.mega-sub-menu,
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+#mega-menu-main_menu > li:hover.mega-menu-megamenu > ul.mega-sub-menu{
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  transition:
+    transform 600ms ease,
+    opacity 600ms ease,
+    visibility 0s linear 0s;
+}
+/* row 내부 ul을 grid로 강제 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+#mega-menu-main_menu > li.mega-menu-item-has-children > ul.mega-sub-menu
+> li.mega-menu-row > ul.mega-sub-menu{
+  display: grid !important;
+
+  /* 좌(카테고리) / 중(카테고리) / 우(카드) */
+  grid-template-columns: minmax(220px, 1fr) minmax(220px, 1fr) minmax(260px, 420px);
+
+  column-gap: 44px;
+  row-gap: 24px;
+
+  padding: 0 24px !important;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Max Mega Menu 기본 column 폭/float 간섭 제거 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu .mega-menu-column{
+  width: auto !important;
+  max-width: none !important;
+  min-width: 0 !important;
+}
+
+/* =========================================================
+   !!! 중요 수정: 줄바꿈/워드브레이크는 "서브메뉴"에만 적용
+   (최상위 메뉴까지 white-space: normal 먹는 문제 방지)
+   ========================================================= */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+ul.mega-sub-menu .mega-menu-column,
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+ul.mega-sub-menu .mega-menu-item,
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+ul.mega-sub-menu a.mega-menu-link{
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  white-space: normal !important;
+}
+
+/* 좌/중 메뉴 리스트 구분선 + 패딩 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+.mega-menu-column > ul.mega-sub-menu > li.mega-menu-item:last-child{
+  border-bottom: 0 !important;
+}
+
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+.mega-menu-column > ul.mega-sub-menu a.mega-menu-link{
+  padding: 1.25rem 0 !important;
+}
+
+/* =========================================================
+   !!! 중요 수정: 헤더 스코프 없는 규칙(전역으로 퍼지는 것) 수정
+   ========================================================= */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu #mega-menu-main_menu
+li.mega-menu-megamenu > ul.mega-sub-menu > li.mega-menu-row
+.mega-menu-column > ul.mega-sub-menu > li.mega-menu-item{
+  padding: 0;
+}
+
+/* 우측 Elementor 카드(포스트 그리드)
+   - 해상도에 따라 우측에 여백이 생기는 원인(카드 max-width 제한 + start 정렬)을 제거
+   - 컬럼 폭을 100% 사용하고, 카드 덩어리는 항상 우측 끝에 붙게 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+.mega-menu-item-type-widget.widget_elementor-library{
+  justify-self: stretch !important;
+  width: 100% !important;
+}
+
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+.mega-menu-item-type-widget.widget_elementor-library .elementor{
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* =========================================================
+   Mega menu: 서브메뉴 "설명(텍스트 위젯)" 높이/두께 줄이기
+   ========================================================= */
+
+/* =========================================================
+   !!! 중요 수정: margin-bottom:-1rem을 "전체 링크"가 아니라
+   1단계(컬럼 바로 아래) 링크만 타겟
+   ========================================================= */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+#mega-menu-main_menu > li.mega-menu-item-has-children > ul.mega-sub-menu
+> li.mega-menu-row > ul.mega-sub-menu
+> li.mega-menu-column > ul.mega-sub-menu
+> li.mega-menu-item > a.mega-menu-link{
+  margin-bottom: -1rem;
+}
+
+/* "위젯(엘리멘터 라이브러리)" 아이템 여백 제거 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+.mega-menu-item-type-widget.widget_elementor-library{
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 위젯 내부(엘리멘터) 기본 패딩/마진/최소높이 제거 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+.mega-menu-item-type-widget.widget_elementor-library .elementor,
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+.mega-menu-item-type-widget.widget_elementor-library .elementor-section,
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+.mega-menu-item-type-widget.widget_elementor-library .elementor-container,
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+.mega-menu-item-type-widget.widget_elementor-library .e-con,
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+.mega-menu-item-type-widget.widget_elementor-library .elementor-widget,
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+.mega-menu-item-type-widget.widget_elementor-library .elementor-widget-container{
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: 0 !important;
+}
+
+/* 설명 텍스트(p) 기본 마진 제거 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+.mega-menu-item-type-widget.widget_elementor-library p{
+  margin: 0 !important;
+}
+
+/* 설명 텍스트 스타일 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu .textwidget{
+  font-family: var(--e-global-typography-accent-font-family, inherit);
+  font-size: var(--e-global-typography-accent-font-size, 14px);
+  font-weight: var(--e-global-typography-accent-font-weight, 600);
+  line-height: var(--e-global-typography-accent-line-height, 1.4);
+  color: var(--e-global-color-primary, #000);
+}
+
+/* 위젯 라인하이트 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+.mega-menu-item-type-widget.widget_elementor-library{
+  line-height: 1.3 !important;
+}
+
+/* row-gap 줄이기 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+#mega-menu-main_menu > li.mega-menu-item-has-children > ul.mega-sub-menu
+> li.mega-menu-row > ul.mega-sub-menu{
+  row-gap: 16px !important;
+}
+
+/* =========================================================
+   서브메뉴 카드
+   ========================================================= */
+
+/* 카드(위젯) 래퍼는 컬럼 폭을 100% 사용 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+li[id^="mega-menu-item-elementor-library-"] .elementor{
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* TPG 컨테이너도 컬럼 폭을 100% 사용 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+li[id^="mega-menu-item-elementor-library-"] .rt-tpg-container{
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* 3번째 컬럼(우측 카드 영역): 항상 우측 끝 정렬 + 불필요한 우측 패딩 제거 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+#mega-menu-main_menu > li.mega-menu-item-has-children > ul.mega-sub-menu
+> li.mega-menu-row > ul.mega-sub-menu
+> li.mega-menu-column:last-child{
+  display: flex !important;
+  justify-content: flex-end !important;
+  padding-right: 0 !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+}
+
+/* 3번째 컬럼 안의 UL도 우측 정렬 (해상도 변화 시 생기는 우측 여백 방지) */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu
+#mega-menu-main_menu > li.mega-menu-item-has-children > ul.mega-sub-menu
+> li.mega-menu-row > ul.mega-sub-menu
+> li.mega-menu-column:last-child > ul.mega-sub-menu{
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  width: 100% !important;
+}
+
+/* =========================================================
+   FIX 1) 드롭다운 폭/좌우라인이 헤더 박스(#site-header-inner)와 안맞는 문제
+   - absolute 기준이 #mega-menu-main_menu 같은 중간 relative 요소로 잡히면
+     드롭다운이 "메뉴 UL 폭" 기준으로 계산돼서 헤더 폭이랑 달라집니다.
+   ========================================================= */
+
+/* 헤더 박스를 드롭다운의 확실한 기준 컨테이너로 고정 */
+#site-header-inner{
+    position: relative !important;
+  }
+  
+  /* 중간에 끼어있는 relative/absolute 기준점 제거 (중요) */
+  #site-header-inner #site-navigation #mega-menu-wrap-main_menu,
+  #site-header-inner #site-navigation #mega-menu-wrap-main_menu #mega-menu-main_menu,
+  #site-header-inner #site-navigation-wrap{
+    position: static !important;
+  }
+  
+  /* 드롭다운(메가패널)을 헤더 박스 폭에 정확히 맞추기 */
+  /* Removed per instructions */
+
+/* =========================================================
+   FIX 2) 카테고리(좌/중 컬럼) 수직 중앙정렬
+   - grid 컨테이너에서 align-content/align-items로 중앙정렬
+   - 각 컬럼 UL도 flex로 중앙정렬
+   ========================================================= */
+  
+  /* grid 자체를 수직 중앙 쪽으로 */
+  #site-header-inner #site-navigation #mega-menu-wrap-main_menu
+  #mega-menu-main_menu > li.mega-menu-item-has-children > ul.mega-sub-menu
+  > li.mega-menu-row > ul.mega-sub-menu{
+    align-content: center !important; /* grid 전체 덩어리 세로 정렬 */
+    align-items: start !important;    /* 컬럼 내부는 기본 start 유지 */
+    min-height: 320px;               /* 필요시 값 조정: 중앙정렬 체감용 */
+  }
+  
+  /* 좌/중 컬럼의 리스트를 컬럼 높이 기준으로 세로 중앙에 */
+  #site-header-inner #site-navigation #mega-menu-wrap-main_menu
+  #mega-menu-main_menu > li.mega-menu-item-has-children > ul.mega-sub-menu
+  > li.mega-menu-row > ul.mega-sub-menu
+  > li.mega-menu-column:not(:last-child) > ul.mega-sub-menu{
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important; /* 세로 중앙 */
+    height: 100% !important;
+  }
+
+  /* 상단 메뉴 수직 중앙 정렬 강제 */
+#site-header-inner #site-navigation #mega-menu-wrap-main_menu #mega-menu-main_menu{
+    height: 100% !important;
+    margin: 0 !important;
+  }
+  
+  #site-header-inner #site-navigation-wrap{
+    height: 100% !important;
+  }
+  
+  #site-header-inner #site-navigation #mega-menu-wrap-main_menu
+  #mega-menu-main_menu > li > a.mega-menu-link{
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+  
+    /* 테마/플러그인 기본 상하 패딩 때문에 위로 뜨는 경우가 많아서 0으로 한번 눌러줌 */
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  
+    /* 시각 중앙 더 안정적으로 */
+    line-height: 1.2 !important;
+  }
+
+/* =========================================================
+   Responsive: prevent mega menu overflow on smaller widths
+   ========================================================= */
+
+@media (max-width: 1100px){
+  /* Reduce gaps/padding so the panel fits comfortably */
+  #site-header-inner #site-navigation #mega-menu-wrap-main_menu
+  #mega-menu-main_menu > li.mega-menu-item-has-children > ul.mega-sub-menu
+  > li.mega-menu-row > ul.mega-sub-menu{
+    column-gap: 24px !important;
+    padding: 0 16px !important;
+    grid-template-columns: minmax(200px, 1fr) minmax(200px, 1fr) minmax(240px, 360px) !important;
+  }
+}
+
+@media (max-width: 900px){
+  /* Switch to 2 columns: categories + card below */
+  #site-header-inner #site-navigation #mega-menu-wrap-main_menu
+  #mega-menu-main_menu > li.mega-menu-item-has-children > ul.mega-sub-menu
+  > li.mega-menu-row > ul.mega-sub-menu{
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    row-gap: 20px !important;
+  }
+
+  /* Make the widget/card span full width */
+  #site-header-inner #site-navigation #mega-menu-wrap-main_menu
+  #mega-menu-main_menu > li.mega-menu-item-has-children > ul.mega-sub-menu
+  > li.mega-menu-row > ul.mega-sub-menu
+  > li.mega-menu-column:last-child{
+    grid-column: 1 / -1 !important;
+    display: block !important;
+  }
+
+  #site-header-inner #site-navigation #mega-menu-wrap-main_menu
+  #mega-menu-main_menu > li.mega-menu-item-has-children > ul.mega-sub-menu
+  > li.mega-menu-row > ul.mega-sub-menu
+  > li.mega-menu-column:last-child > ul.mega-sub-menu{
+    align-items: flex-end !important;
+  }
+
+  #site-header-inner #site-navigation #mega-menu-wrap-main_menu
+  li[id^="mega-menu-item-elementor-library-"] .elementor,
+  #site-header-inner #site-navigation #mega-menu-wrap-main_menu
+  li[id^="mega-menu-item-elementor-library-"] .rt-tpg-container{
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 700px){
+  /* Single column stack */
+  #site-header-inner #site-navigation #mega-menu-wrap-main_menu
+  #mega-menu-main_menu > li.mega-menu-item-has-children > ul.mega-sub-menu
+  > li.mega-menu-row > ul.mega-sub-menu{
+    grid-template-columns: 1fr !important;
+    padding: 0 14px !important;
+  }
+}

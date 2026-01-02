@@ -1,0 +1,463 @@
+/* =========================================================
+   홈 히어로 배너 (Elementor → The Post Grid / Slider)
+
+   적용 범위(스코프)
+   - (권장) 섹션에 .zzbb-hero-banner 클래스를 직접 부여
+   - 또는 Elementor 섹션/위젯 ID 클래스(.elementor-element-d95d83d)로도 동작
+
+   목적
+   - 데스크탑: 2컬럼(좌: 이미지 / 우: 텍스트 패널)
+   - 좌측 이미지는 항상 1:1 정사각형
+   - 우측은 핑크 패널(라운드) 위에 텍스트가 배치
+   ========================================================= */
+
+/* -----------------------------
+   스코프(범위) 공통
+------------------------------ */
+.zzbb-hero-banner,
+.elementor-element-d95d83d{
+  background-color: var(--e-global-color-b08b7e9);
+}
+
+/* -----------------------------
+   레이아웃(데스크탑 2컬럼)
+   - 카드 전체를 2:1 비율로 만들어 좌측 1/2가 정사각형이 되도록 구성
+------------------------------ */
+.zzbb-hero-banner .rt-el-content-wrapper,
+.elementor-element-d95d83d .rt-el-content-wrapper,
+/* 플러그인/인라인성 규칙을 이기기 위한 추가 구체성 */
+.elementor-element-d95d83d .rt-holder .rt-detail.rt-el-content-wrapper,
+.elementor-element-d95d83d .rt-slider-item .rt-holder .rt-detail.rt-el-content-wrapper{
+  display: grid !important;
+
+  /* 2컬럼: 좌(이미지) / 우(텍스트) */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
+  /* 우측 콘텐츠를 “원본 느낌”처럼 아래로 내려 배치하기 위해 명시적 행 구성 */
+  grid-template-rows:
+    auto   /* 1행: 메타(날짜 + 카테고리) */
+    1fr    /* 2행: 여백(타이틀/본문을 아래로 밀어줌) */
+    auto   /* 3행: 타이틀 */
+    auto   /* 4행: 요약(Excerpt) */
+    auto;  /* 5행: Read more + 페이지네이션 */
+
+  column-gap: 0;
+  row-gap: 0;
+
+  /* 좌측 이미지가 카드 높이를 꽉 채우도록 */
+  align-items: stretch;
+  justify-items: stretch;
+
+  background-color: var(--e-global-color-b08b7e9);
+  padding: 0;
+  position: relative;
+  z-index: 0;
+
+  /* 카드 전체 비율: 2:1 → 좌측 절반이 1:1 정사각형 */
+  aspect-ratio: 2 / 1;
+  height: auto;
+}
+
+/* -----------------------------
+   좌측 이미지 영역
+   - 그리드의 모든 행(1~5행)을 span
+   - 항상 1:1 비율 유지
+   - 플러그인이 강제로 넣는 height/margin/order 등을 무력화
+------------------------------ */
+.zzbb-hero-banner .rt-img-holder,
+.elementor-element-d95d83d .rt-img-holder,
+.elementor-element-d95d83d .rt-detail.rt-el-content-wrapper .rt-img-holder,
+.elementor-element-d95d83d .rt-slider-item .rt-detail.rt-el-content-wrapper .rt-img-holder{
+  grid-column: 1;
+  grid-row: 1 / -1; /* 모든 행을 차지 */
+
+  aspect-ratio: 1 / 1;
+
+  overflow: hidden;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+
+  /* 플러그인 기본 레이아웃 값 제거 */
+  margin: 0 !important;
+  padding: 0 !important;
+  order: 0 !important;
+  float: none !important;
+  max-height: none !important;
+
+  /* 이미지와 우측 패널 사이 간격 */
+  padding-right: 1rem !important;
+
+  align-self: stretch !important;
+  justify-self: stretch !important;
+
+  position: relative;
+  z-index: 1;
+
+  /* 원본 느낌의 라운딩 */
+  border-radius: 1rem;
+}
+
+.zzbb-hero-banner .rt-img-holder img,
+.elementor-element-d95d83d .rt-img-holder img,
+.elementor-element-d95d83d .rt-detail.rt-el-content-wrapper .rt-img-holder img{
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  object-fit: cover;
+  display: block;
+}
+
+/* -----------------------------
+   우측(텍스트) 컬럼 공통
+------------------------------ */
+.zzbb-hero-banner .rt-el-content-wrapper > :not(.rt-img-holder),
+.elementor-element-d95d83d .rt-el-content-wrapper > :not(.rt-img-holder){
+  grid-column: 2;
+  align-self: stretch;
+  min-width: 0;
+
+  /* (원본 CSS) 우측 전체에 공통 패딩(상단 여백 포함) */
+  padding: 1.5rem 1rem 0 1rem;
+
+  position: relative;
+  z-index: 1;
+}
+
+/* 우측 요소를 그리드 행에 배치(원본 레이아웃 느낌 유지) */
+.zzbb-hero-banner .rt-el-post-meta,
+.elementor-element-d95d83d .rt-el-post-meta{ grid-row: 1; }
+
+.zzbb-hero-banner .entry-title-wrapper,
+.elementor-element-d95d83d .entry-title-wrapper{ grid-row: 3; }
+
+.zzbb-hero-banner .tpg-el-excerpt,
+.elementor-element-d95d83d .tpg-el-excerpt{ grid-row: 4; }
+
+/* Read more는 하단(5행)에 */
+.zzbb-hero-banner .post-footer,
+.elementor-element-d95d83d .post-footer{ grid-row: 5; }
+
+/* 페이지네이션도 하단(5행) + 우측 정렬 */
+.zzbb-hero-banner .tpg-el-main-wrapper .slider-main-wrapper .swiper-pagination,
+.elementor-element-d95d83d .tpg-el-main-wrapper .slider-main-wrapper .swiper-pagination{
+  grid-row: 5;
+  justify-self: end;
+  align-self: end;
+}
+
+/* -----------------------------
+   메타/텍스트 정렬(원본 간격)
+------------------------------ */
+.zzbb-hero-banner .rt-el-post-meta,
+.elementor-element-d95d83d .rt-el-post-meta{
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.zzbb-hero-banner .rt-el-post-meta .date,
+.elementor-element-d95d83d .rt-el-post-meta .date{
+  margin-bottom: 1.5rem;
+}
+
+.zzbb-hero-banner .entry-title-wrapper,
+.zzbb-hero-banner .rt-el-post-meta,
+.zzbb-hero-banner .tpg-el-excerpt,
+.elementor-element-d95d83d .entry-title-wrapper,
+.elementor-element-d95d83d .rt-el-post-meta,
+.elementor-element-d95d83d .tpg-el-excerpt{
+  margin-left: 1.5rem;
+  z-index: 1;
+}
+
+.zzbb-hero-banner .tpg-excerpt,
+.elementor-element-d95d83d .tpg-excerpt{
+  margin-bottom: 3rem;
+}
+
+/* -----------------------------
+   그림자 제거(카드가 플랫하게)
+------------------------------ */
+.zzbb-hero-banner,
+.zzbb-hero-banner * ,
+.elementor-element-d95d83d,
+.elementor-element-d95d83d *{
+  box-shadow: none !important;
+}
+
+/* -----------------------------
+   Read More (하단 좌측)
+   - 내부 구조가 .post-footer > .post-footer 로 중첩되어 있어 그에 맞춰 유지
+------------------------------ */
+.zzbb-hero-banner .rt-tpg-container .rt-holder .rt-detail .read-more a,
+.elementor-element-d95d83d .rt-tpg-container .rt-holder .rt-detail .read-more a{
+  padding: 0;
+  z-index: 1;
+}
+
+.zzbb-hero-banner .post-footer .post-footer,
+.elementor-element-d95d83d .post-footer .post-footer{
+  margin-left: 1.5rem;
+}
+
+.zzbb-hero-banner .post-footer,
+.elementor-element-d95d83d .post-footer{
+  margin: 0;
+  z-index: 0;
+  padding-bottom: 1.5rem;
+}
+
+/* -----------------------------
+   페이지네이션(하단 우측)
+------------------------------ */
+.zzbb-hero-banner .tpg-el-main-wrapper .slider-main-wrapper .swiper-pagination,
+.elementor-element-d95d83d .tpg-el-main-wrapper .slider-main-wrapper .swiper-pagination{
+  bottom: 0;
+  min-height: fit-content;
+  right: 0;
+  width: auto;
+  z-index: 1;
+  padding-right: 1rem;
+  padding-bottom: 1.5rem;
+}
+
+/* -----------------------------
+   카테고리(필 형태)
+------------------------------ */
+.zzbb-hero-banner .categories-links a,
+.elementor-element-d95d83d .categories-links a{
+  border: 1px solid var(--e-global-color-3fcbc60);
+  padding: 0.3rem 1rem;
+  border-radius: 99em;
+  margin-right: 0.5em;
+}
+
+.zzbb-hero-banner .rt-separator,
+.elementor-element-d95d83d .rt-separator{
+  display: none;
+}
+
+/* -----------------------------
+   우측 핑크 패널(배경)
+   - left: calc(50% + 1rem)  → 좌측 이미지에 준 padding-right(1rem)을 보정
+------------------------------ */
+.zzbb-hero-banner .rt-el-content-wrapper::after,
+.elementor-element-d95d83d .rt-el-content-wrapper::after{
+  content: "";
+  position: absolute;
+  background-color: var(--e-global-color-primary);
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: calc(50% + 1rem);
+  border-radius: 1rem;
+  pointer-events: none;
+  box-sizing: border-box;
+  clip-path: inset(0 0 0 0 round 1rem);
+  z-index: 0;
+}
+
+/* -----------------------------
+   모바일/태블릿(1컬럼)
+   - 768px에서만 바뀌면 iPad/일부 모바일 해상도에서 2컬럼이 유지될 수 있어
+     1024px까지 1컬럼으로 강제
+------------------------------ */
+@media (max-width: 767px){
+  /* 모바일: 이미지(상단) + 텍스트(하단) 세로 스택 */
+  .zzbb-hero-banner .rt-el-content-wrapper,
+  .elementor-element-d95d83d .rt-el-content-wrapper{
+    /* grid → column 레이아웃으로 전환 */
+    display: flex !important;
+    flex-direction: column !important;
+
+    /* 데스크탑용 비율/그리드 영향 제거 */
+    aspect-ratio: auto !important;
+    height: auto !important;
+
+    /* 컴포넌트 내부 좌우 패딩 제거(페이지 자체 패딩은 그대로) */
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    /* 배경은 텍스트 패널에서만 처리 */
+    background: transparent !important;
+  }
+
+  /* 이미지: 항상 최상단 + 1:1 + 텍스트 영역과 간격 */
+  .zzbb-hero-banner .rt-img-holder,
+  .elementor-element-d95d83d .rt-img-holder{
+    order: 0 !important;
+    width: 100% !important;
+    aspect-ratio: 1 / 1;
+    height: auto !important;
+
+    padding-right: 0 !important;
+    margin: 0 0 1rem 0 !important; /* 이미지와 텍스트 패널 사이 간격 */
+
+    border-radius: 1rem !important;
+    overflow: hidden !important;
+  }
+
+  /* 텍스트 영역(메타/제목/요약/푸터/페이지네이션)은 이미지 아래로 */
+  .zzbb-hero-banner .rt-el-content-wrapper > :not(.rt-img-holder),
+  .elementor-element-d95d83d .rt-el-content-wrapper > :not(.rt-img-holder){
+    order: 1;
+    width: 100%;
+    min-width: 0;
+
+    /* 모바일에서 데스크탑처럼 ‘영역’이 나뉘어 보이도록 텍스트 패널 배경을 각 블록에 적용 */
+    background-color: var(--e-global-color-primary);
+
+    /* 기존 margin-left(1.5rem) 제거 */
+    margin-left: 0 !important;
+
+    /* 텍스트 패널 내부 패딩 */
+    padding: 1.25rem 1rem 0 1rem !important;
+
+    position: relative;
+    z-index: 1;
+  }
+
+  /* 패널의 라운드: 맨 위(메타) / 맨 아래(푸터)만 라운드 */
+  .zzbb-hero-banner .rt-el-post-meta,
+  .elementor-element-d95d83d .rt-el-post-meta{
+    border-radius: 1rem 1rem 0 0;
+    padding-top: 1.25rem !important;
+  }
+
+  .zzbb-hero-banner .entry-title-wrapper,
+  .elementor-element-d95d83d .entry-title-wrapper{
+    padding-top: 1.25rem !important;
+  }
+
+  .zzbb-hero-banner .tpg-el-excerpt,
+  .elementor-element-d95d83d .tpg-el-excerpt{
+    padding-top: 1rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+
+  /* Read More + 페이지네이션 영역을 동일한 하단 라인에 배치 */
+  .zzbb-hero-banner .post-footer,
+  .elementor-element-d95d83d .post-footer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0.75rem 1rem 1.25rem 1rem !important;
+    border-radius: 0 0 1rem 1rem;
+  }
+
+  /* 중첩된 .post-footer .post-footer 의 좌측 밀림 제거 */
+  .zzbb-hero-banner .post-footer .post-footer,
+  .elementor-element-d95d83d .post-footer .post-footer{
+    margin-left: 0 !important;
+  }
+
+  /* 페이지네이션: 모바일에서는 패널 안(푸터 우측)에 오게 */
+  .zzbb-hero-banner .tpg-el-main-wrapper .slider-main-wrapper .swiper-pagination,
+  .elementor-element-d95d83d .tpg-el-main-wrapper .slider-main-wrapper .swiper-pagination{
+    position: static !important;
+    width: auto !important;
+
+    /* 푸터 오른쪽으로 붙이기 */
+    margin-left: auto;
+
+    padding: 0 !important;
+  }
+
+  /* 모바일에서는 데스크탑용 핑크 패널(::after) 사용하지 않음 */
+  .zzbb-hero-banner .rt-el-content-wrapper::after,
+  .elementor-element-d95d83d .rt-el-content-wrapper::after{
+    content: none !important;
+  }
+}
+
+/* -----------------------------
+   기타(플러그인 기본 스타일 보정)
+------------------------------ */
+.tpg-el-main-wrapper .post-meta-tags span{
+  row-gap: 1rem;
+}
+
+.rt-separator{
+  display: none !important;
+}
+
+.tpg-el-main-wrapper .rt-holder .post-footer{
+  margin-bottom: 0;
+}
+
+/* =========================================================
+   모바일 전용 보정
+   - 페이지 전체에 이미 좌우 패딩이 존재하므로
+   - 히어로 배너 내부 좌우 패딩 제거
+   - 모바일에서는 상하 스택 구조 유지
+   ========================================================= */
+@media (max-width: 767px){
+
+  /* 히어로 전체 래퍼 */
+  .zzbb-hero-banner .rt-el-content-wrapper,
+  .elementor-element-d95d83d .rt-el-content-wrapper{
+    /* 1컬럼 강제(플러그인/인라인 규칙 대비) */
+    grid-template-columns: 1fr !important;
+
+    /* 페이지(바깥쪽)에서 이미 좌우 패딩이 있는 경우가 많아 내부 패딩 제거 */
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* 좌측 이미지 영역: 모바일에서는 전체 폭 사용 */
+  .zzbb-hero-banner .rt-img-holder,
+  .elementor-element-d95d83d .rt-img-holder{
+    padding-right: 0 !important;
+    margin: 0 !important;
+    border-radius: 1rem;
+  }
+
+  /* 우측(텍스트) 영역 공통 패딩 조정 */
+  .zzbb-hero-banner .rt-el-content-wrapper > :not(.rt-img-holder),
+  .elementor-element-d95d83d .rt-el-content-wrapper > :not(.rt-img-holder){
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+    padding-top: 1.5rem !important;
+    grid-column: 1 !important;
+    grid-row: auto !important;
+  }
+
+  /* 텍스트 블록 좌측 밀림 제거 */
+  .zzbb-hero-banner .entry-title-wrapper,
+  .zzbb-hero-banner .rt-el-post-meta,
+  .zzbb-hero-banner .tpg-el-excerpt,
+  .elementor-element-d95d83d .entry-title-wrapper,
+  .elementor-element-d95d83d .rt-el-post-meta,
+  .elementor-element-d95d83d .tpg-el-excerpt{
+    margin-left: 0 !important;
+  }
+
+  /* Read More / 페이지네이션 좌우 정렬 보정 */
+  .zzbb-hero-banner .post-footer,
+  .elementor-element-d95d83d .post-footer{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .zzbb-hero-banner .rt-img-holder, .elementor-element-d95d83d .rt-img-holder, .elementor-element-d95d83d .rt-detail.rt-el-content-wrapper .rt-img-holder, .elementor-element-d95d83d .rt-slider-item .rt-detail.rt-el-content-wrapper .rt-img-holder {
+    padding-right: 0 !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .zzbb-hero-banner .rt-el-content-wrapper > :not(.rt-img-holder), .elementor-element-d95d83d .rt-el-content-wrapper > :not(.rt-img-holder){
+    margin-bottom: 0;
+  }
+  .rt-tpg-container .rt-holder .rt-detail .entry-title-wrapper {
+    margin-bottom: 0;
+  }
+  
+  .rt-tpg-container .grid-layout1 .rt-holder, .rt-tpg-container .grid-layout3 .rt-holder {
+    background-color: var(--e-global-color-b08b7e9);
+  }
+  body .tpg-el-main-wrapper .rt-grid-item {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
