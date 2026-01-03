@@ -10,7 +10,7 @@
 /* 헤더 전체 박스 영역 */
 #site-header{
   position: relative;
-  height: 8rem;
+  height: 10rem;
   --hdr-pad-top: 2rem;
   --hdr-pad-x: 1rem;
   --hdr-pad-bottom: 1rem;
@@ -29,8 +29,9 @@
   padding: 0 15px;
   background: var(--e-global-color-3fcbc60);
   border: 1px solid var(--e-global-color-primary);
-  border-radius: 1rem;
+  border-radius: 2rem;
   box-sizing: border-box;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
 }
 
 /* 로고 */
@@ -139,7 +140,6 @@
   margin-right: 0 !important;
 
   box-sizing: border-box !important;
-
   /* ✅ 헤더 하단 라운딩/보더 이음새 숨기기 위해 더 겹치게 올림 */
   top: calc(100% - 8px) !important;
   margin-top: 0 !important;
@@ -246,6 +246,8 @@
   max-width: none !important;
   min-width: 0 !important;
 }
+#mega-menu-wrap-main_menu #mega-menu-main_menu > li.mega-menu-item-877 {
+margin-left: auto !important;}
 
 /* =========================================================
    !!! 중요 수정: 줄바꿈/워드브레이크는 "서브메뉴"에만 적용
